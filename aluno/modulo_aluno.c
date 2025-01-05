@@ -96,9 +96,33 @@ void tela_pesquisar_aluno(void){
   printf("***                                                                         ***\n");
   printf("*******************************************************************************\n");
   printf("*******************************************************************************\n");
-  printf("\n");
-  printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
-  getchar();
+   if(fp == NULL){
+      printf("Arquivo não encontrado!");
+    
+    }else{
+
+      do{
+        printf("\nDigite o CPF : ");
+        fgets(cpf, 15, stdin);
+        cpf[strcspn(cpf, "\n")] = '\0'; 
+      }while(!verificarCPF(cpf));
+
+      while(fread(aluno, sizeof(aluno), 1, fp)) {
+        if ((strcmp(aluno->cpf, cpf) == 0)){
+          printf("CPF: %s\n", aluno->cpf);
+          printf("Nome: %s\n", aluno->nome);
+          printf("E-mail: %s\n", aluno->email);
+          printf("Telefone: %s\n", aluno->fone);
+          printf("Status: %c\n", aluno->status);
+        }
+      }
+    }
+    fclose(fp);
+    free(aluno);
+    free(cpf);
+
+    printf(">>> Tecle <ENTER> para continuar...\n");
+    getchar();
 }
 
 void tela_atualizar_aluno(void){
