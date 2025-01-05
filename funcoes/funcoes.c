@@ -22,16 +22,7 @@ int verificarnumero(char* num){
     }
 }
 
-int verificarpreco(char* preco){
-    int i;
-    for(i = 0; preco[i] != '\0'; i++){
-        if(!(verificarnumero(&preco[i]))){
-            if((preco[i] != ',') && (preco[i] != '.'))
-                return 0;
-        }
-    }
-    return 1;
-}
+
 
 int verificardigito(int soma, int peso) {
     int resto = soma % 11;
