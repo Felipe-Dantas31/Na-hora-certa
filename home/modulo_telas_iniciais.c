@@ -55,6 +55,22 @@ char tela_menu_principal(void){
   return op;
 }
 
+char tela_alterar_dado(void){
+  char op;
+  printf("***         Escolha o dado que deseja alterar:                              ***\n");
+  printf("***                                                                         ***\n");
+  printf("***         1 - Nome                                                        ***\n");
+  printf("***         2 - E-mail                                                      ***\n");
+  printf("***         3 - Telefone                                                    ***\n");
+  printf("***         4 - Status (0 - ativo, 1 - inativo)                             ***\n");
+  printf("***         0 - Concluir alterações                                         ***\n");
+  printf("***                                                                         ***\n");
+  printf("***         Opção: ");
+  scanf("%c", &op);
+  getchar();
+  return op;
+}
+
 void tela_sobre(void) {
   cabecalho_principal();
   printf("*******************************************************************************\n");

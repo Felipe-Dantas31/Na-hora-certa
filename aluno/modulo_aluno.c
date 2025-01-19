@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include "../home/modulo_telas_iniciais.h"
 #include "modulo_aluno.h"
-#include "funcoes.h"
+#include "../funcoes/funcoes.h"
 
 void modulo_aluno(void) {
 	char op;
@@ -24,6 +24,7 @@ void modulo_aluno(void) {
 }
 
 char menu_aluno(void){
+
 
   char op;
   cabecalho_principal();
@@ -47,6 +48,48 @@ char menu_aluno(void){
   return op;
 }
 
+void ler_nome(Aluno* aluno) {
+    do {
+        printf("\nDigite o Nome (somente letras e espaços): ");
+        fgets(aluno->nome, 50, stdin);
+        aluno->nome[strcspn(aluno->nome, "\n")] = '\0';  
+    } while (!verificarnome(aluno->nome));  
+}
+
+
+void ler_email(Aluno* aluno) {
+    do {
+        printf("\nDigite o Email (formato correto: exemplo@dominio.com): ");
+        fgets(aluno->email, 50, stdin);
+        aluno->email[strcspn(aluno->email, "\n")] = '\0';  
+    } while (!verificaremail(aluno->email));  
+}
+
+void ler_cpf(Aluno* aluno) {
+    do {
+        printf("\nDigite o CPF (apenas números): ");
+        fgets(aluno->cpf, 15, stdin);
+        aluno->cpf[strcspn(aluno->cpf, "\n")] = '\0';  
+    } while (!verificarCPF(aluno->cpf));  
+}
+
+
+void ler_telefone(Aluno* aluno) {
+    do {
+        printf("\nDigite o Telefone (apenas números, 10 ou 11 dígitos): ");
+        fgets(aluno->fone, 15, stdin);  
+        aluno->fone[strcspn(aluno->fone, "\n")] = '\0';
+    } while (!verificarfone(aluno->fone)); 
+}
+
+void ler_status(Aluno* aluno) {
+    do {
+        printf("\nDigite o status (0 ou 1): ");
+        fgets(aluno->status, 1, stdin);  
+        aluno->status[strcspn(aluno->status, "\n")] = '\0';
+    } while (aluno->status != 0 && aluno->status != 1);  
+}
+
 void cadastrar_aluno(void){
   
   cabecalho_principal();
@@ -60,33 +103,16 @@ void cadastrar_aluno(void){
   printf("***                  - - - - Cadastrar Aluno - - - -                        ***\n");
   printf("***                                                                         ***\n");
   
-  do{
-    printf("\nDigite o Nome: ");
-    fgets(aluno->nome, 50, stdin);
-    aluno->nome[strcspn(aluno->nome, "\n")] = '\0';
- }while(!verificarnome(aluno->nome));
   
- 
-  do{
-    printf("\nDigite o Email: ");
-    fgets(aluno->email, 50, stdin);
-    aluno->email[strcspn(aluno->email, "\n")] = '\0';
-  }while(!verificaremail(aluno->email));
-  
- 
-  do{
-    printf("\nDigite o CPF : ");
-    fgets(aluno->cpf, 15, stdin);
-    aluno->cpf[strcspn(aluno->cpf, "\n")] = '\0'; 
-  }while(!verificarCPF(aluno->cpf));
-  
-  do{
-    printf("\nDigite o Telefone: ");
-    fgets(aluno->fone, 15, stdin);
-    aluno->fone[strcspn(aluno->fone, "\n")] = '\0';
-  }while(!verificarfone(aluno->fone));
-  
-  aluno->status = '1';
+  ler_nome(aluno); 
+
+  ler_email(aluno);   
+
+  ler_cpf(aluno);     
+
+  ler_telefone(aluno); 
+
+  ler_status(aluno);
 
   fwrite(aluno, sizeof(Aluno), 1, fp);
   fclose(fp);
@@ -169,14 +195,12 @@ void atualizar_aluno(void){
   cabecalho_principal();
   FILE* fp;
   fp = fopen("aluno.dat", "rb");
-  FILE* temp;
-  temp = fopen("temp.dat", "wb"); 
   char op;
 
-  if (fp == NULL || temp == NULL) {
+
+  if (fp == NULL) {
     printf("Erro ao abrir os arquivos!\n");
-    if (fp) fclose(fp);
-    if (temp) fclose(temp);
+    fclose(fp);
     return;
   }  
     
@@ -189,20 +213,32 @@ void atualizar_aluno(void){
   Aluno* aluno = buscar_aluno();
   if (aluno == NULL) {
     fclose(fp);
-    fclose(temp);
-    remove("temp.dat");
     return; 
   }
-    
+  do {
+    op = tela_alterar_dado();
+		switch(op) {
+			case '1': 
+        ler_nome(aluno);
+        break;
+			case '2':
+        ler_email(aluno); 	
+				break;
+			case '3': 	
+        ler_telefone(aluno);
+				break;
+			case '4': 
+        ler_status(aluno);	
+				break;
+		} 		
+	} while (op != '0');
 
 
 
   
   fclose(fp);
-  fclose(temp);
 
   remove("aluno.dat");
-  rename("temp.dat", "aluno.dat");
 
   printf("\n>>> Tecle <ENTER> para continuar...\n");
   getchar();

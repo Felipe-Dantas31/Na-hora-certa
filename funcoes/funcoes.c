@@ -5,6 +5,7 @@
 #include "funcoes.h"
 
 
+
 int verificarnumero(char* num){
     int a = 0;
     int i;
@@ -128,3 +129,4 @@ int verificaremail(char* email){
     }return 1;
 
 }
+

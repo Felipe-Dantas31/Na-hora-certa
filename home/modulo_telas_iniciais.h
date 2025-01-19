@@ -1,6 +1,7 @@
 void cabecalho_principal(void);
 void cabecalho_secundario(void);
 char tela_menu_principal(void);
+char tela_alterar_dado(void);
 void tela_sobre(void);
 void tela_equipe(void);
 void msg_escolha_invalida(void);

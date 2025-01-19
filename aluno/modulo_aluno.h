@@ -10,7 +10,7 @@ typedef struct aluno Aluno;
 
 struct aluno
 {
-char nome[50], email[50], cpf[15], fone[19], status;
+char nome[50], email[50], cpf[15], fone[19], status[2];
 };
 
 void exibe_aluno(Aluno* aluno);
