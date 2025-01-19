@@ -118,7 +118,7 @@ void cadastrar_aluno(void){
   fclose(fp);
   free(aluno);
 
-  printf("\nCliente cadastrado com sucesso!\n");
+  printf("\nAluno cadastrado com sucesso!\n");
   printf(">>> Tecle <ENTER> para continuar...\n");
   getchar();
   
@@ -230,16 +230,17 @@ void atualizar_aluno(void){
 			case '4': 
         ler_status(aluno);	
 				break;
-		} 		
+		} 	
+    if (op != '0') {
+      fseek(fp, -sizeof(Aluno), SEEK_CUR);  
+      fwrite(aluno, sizeof(Aluno), 1, fp);  
+    }
+
 	} while (op != '0');
-
-
-
   
   fclose(fp);
 
-  remove("aluno.dat");
-
+  printf("\nDados atualizados com sucesso!\n");
   printf("\n>>> Tecle <ENTER> para continuar...\n");
   getchar();
 }
