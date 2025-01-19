@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "includes.h"
 
 void cabecalho_principal(void){
   system("clear||cls");

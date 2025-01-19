@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include "../home/modulo_telas_iniciais.h"
-#include "modulo_aluno.h"
-#include "../funcoes/funcoes.h"
+#include "../home/includes.h"
 
 void modulo_aluno(void) {
 	char op;
@@ -103,13 +97,12 @@ void cadastrar_aluno(void){
   printf("***                  - - - - Cadastrar Aluno - - - -                        ***\n");
   printf("***                                                                         ***\n");
   
-  
+  ler_cpf(aluno);
+
   ler_nome(aluno); 
 
   ler_email(aluno);   
-
-  ler_cpf(aluno);     
-
+    
   ler_telefone(aluno); 
 
   ler_status(aluno);
