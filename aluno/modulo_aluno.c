@@ -79,6 +79,15 @@ void tela_cadastrar_aluno(void){
 
 }
 
+void exibe_aluno(Aluno* aluno){
+  printf("\nAluno encontrado!\n");
+  printf("CPF: %s\n", aluno->cpf);
+  printf("Nome: %s\n", aluno->nome);
+  printf("E-mail: %s\n", aluno->email);
+  printf("Telefone: %s\n", aluno->fone);
+  printf("Status: %c\n", aluno->status);
+} 
+
 void tela_pesquisar_aluno(void){
   cabecalho_principal();
   char* cpf;
@@ -92,7 +101,6 @@ void tela_pesquisar_aluno(void){
   printf("***                                                                         ***\n");
   printf("***                  - - - - Pesquisar Aluno - - - -                        ***\n");
   printf("***                                                                         ***\n");
- 
   printf("***                                                                         ***\n");
   printf("*******************************************************************************\n");
   printf("*******************************************************************************\n");
@@ -109,11 +117,7 @@ void tela_pesquisar_aluno(void){
 
       while(fread(aluno, sizeof(aluno), 1, fp)) {
         if ((strcmp(aluno->cpf, cpf) == 0)){
-          printf("CPF: %s\n", aluno->cpf);
-          printf("Nome: %s\n", aluno->nome);
-          printf("E-mail: %s\n", aluno->email);
-          printf("Telefone: %s\n", aluno->fone);
-          printf("Status: %c\n", aluno->status);
+          exibe_aluno(aluno);
         }
       }
     }
@@ -126,19 +130,77 @@ void tela_pesquisar_aluno(void){
 }
 
 void tela_atualizar_aluno(void){
-  cabecalho_principal();
-  printf("*******************************************************************************\n");
-  printf("***                                                                         ***\n");
-  printf("***                  - - - - Atualizar Aluno - - - -                        ***\n");
-  printf("***                                                                         ***\n");
-  
-  getchar();
-  printf("***                                                                         ***\n");
-  printf("*******************************************************************************\n");
-  printf("*******************************************************************************\n");
-  printf("\n");
-  printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
-  getchar();
+  ccabecalho_principal();
+    char* cpf;
+    cpf = (char*) malloc(15 * sizeof(char));
+    Aluno* aluno;
+    aluno = (Aluno*) malloc(sizeof(Aluno));
+
+    FILE* fp;
+    FILE* temp;
+    fp = fopen("aluno.dat", "rb");
+    temp = fopen("temp.dat", "wb"); 
+
+    if (fp == NULL || temp == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+    } else {
+        printf("*******************************************************************************\n");
+        printf("***                                                                         ***\n");
+        printf("***                  - - - - Atualizar Dados do Aluno - - - -              ***\n");
+        printf("***                                                                         ***\n");
+        printf("*******************************************************************************\n");
+
+        do {
+            printf("\nDigite o CPF do aluno que deseja atualizar: ");
+            fgets(cpf, 15, stdin);
+            cpf[strcspn(cpf, "\n")] = '\0'; 
+        } while (!verificarCPF(cpf));
+
+        int encontrado = 0;
+        while (fread(aluno, sizeof(Aluno), 1, fp)) {
+            if (strcmp(aluno->cpf, cpf) == 0) {
+                encontrado = 1;
+ 
+                printf("\nDigite os novos dados do aluno:\n");
+                printf("Novo nome: ");
+                fgets(aluno->nome, sizeof(aluno->nome), stdin);
+                aluno->nome[strcspn(aluno->nome, "\n")] = '\0';
+
+                printf("Novo e-mail: ");
+                fgets(aluno->email, sizeof(aluno->email), stdin);
+                aluno->email[strcspn(aluno->email, "\n")] = '\0';
+
+                printf("Novo telefone: ");
+                fgets(aluno->fone, sizeof(aluno->fone), stdin);
+                aluno->fone[strcspn(aluno->fone, "\n")] = '\0';
+
+                printf("Novo status (A - ativo, I - inativo): ");
+                scanf(" %c", &aluno->status);
+                getchar(); 
+            }
+            
+            fwrite(aluno, sizeof(Aluno), 1, temp);
+        }
+
+        if (!encontrado) {
+            printf("\nAluno com CPF %s não encontrado!\n", cpf);
+        } else {
+            printf("\nDados atualizados com sucesso!\n");
+        }
+    }
+
+    
+    fclose(fp);
+    fclose(temp);
+
+    remove("aluno.dat");
+    rename("temp.dat", "aluno.dat");
+
+    free(aluno);
+    free(cpf);
+
+    printf("\n>>> Tecle <ENTER> para continuar...\n");
+    getchar();
 }
 
 void tela_excluir_aluno(void){
