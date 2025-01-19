@@ -11,13 +11,13 @@ void modulo_aluno(void) {
 	do {
 		op = menu_aluno();
 		switch(op) {
-			case '1': 	cadastrarAluno();
+			case '1': 	cadastrar_aluno();
 						break;
-			case '2': 	pesquisarAluno();
+			case '2': 	pesquisar_aluno();
 						break;
-			case '3': 	atualizarAluno();
+			case '3': 	atualizar_aluno();
 						break;
-			case '4': 	excluirAluno();
+			case '4': 	excluir_aluno();
 						break;
 		} 		
 	} while (op != '0');
