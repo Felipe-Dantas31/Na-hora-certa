@@ -86,17 +86,40 @@ void exibe_aluno(Aluno* aluno){
   printf("E-mail: %s\n", aluno->email);
   printf("Telefone: %s\n", aluno->fone);
   printf("Status: %c\n", aluno->status);
-} 
+}
 
-void tela_pesquisar_aluno(void){
-  cabecalho_principal();
+Aluno* buscar_aluno(){
   char* cpf;
   cpf = (char*) malloc(15*sizeof(char));
   Aluno* aluno;
   aluno = (Aluno*) malloc(sizeof(Aluno));
   FILE* fp;
   fp = fopen("aluno.dat", "rb");
+  if(fp == NULL){
+      printf("Arquivo não encontrado!");
+    
+  }else{
+    do{
+      printf("\nDigite o CPF : ");
+      fgets(cpf, 15, stdin);
+      cpf[strcspn(cpf, "\n")] = '\0'; 
+    }while(!verificarCPF(cpf));
 
+      while(fread(aluno, sizeof(aluno), 1, fp)){
+        if ((strcmp(aluno->cpf, cpf) == 0)){
+          exibe_aluno(aluno);
+        }
+      }
+    }
+  
+  fclose(fp);
+  free(aluno);
+  free(cpf);
+
+}
+
+void tela_pesquisar_aluno(void){
+  cabecalho_principal();
   printf("*******************************************************************************\n");
   printf("***                                                                         ***\n");
   printf("***                  - - - - Pesquisar Aluno - - - -                        ***\n");
@@ -104,33 +127,12 @@ void tela_pesquisar_aluno(void){
   printf("***                                                                         ***\n");
   printf("*******************************************************************************\n");
   printf("*******************************************************************************\n");
-   if(fp == NULL){
-      printf("Arquivo não encontrado!");
-    
-    }else{
-
-      do{
-        printf("\nDigite o CPF : ");
-        fgets(cpf, 15, stdin);
-        cpf[strcspn(cpf, "\n")] = '\0'; 
-      }while(!verificarCPF(cpf));
-
-      while(fread(aluno, sizeof(aluno), 1, fp)) {
-        if ((strcmp(aluno->cpf, cpf) == 0)){
-          exibe_aluno(aluno);
-        }
-      }
-    }
-    fclose(fp);
-    free(aluno);
-    free(cpf);
-
-    printf(">>> Tecle <ENTER> para continuar...\n");
-    getchar();
+  printf(">>> Tecle <ENTER> para continuar...\n");
+  getchar();
 }
 
 void tela_atualizar_aluno(void){
-  ccabecalho_principal();
+  cabecalho_principal();
     char* cpf;
     cpf = (char*) malloc(15 * sizeof(char));
     Aluno* aluno;
