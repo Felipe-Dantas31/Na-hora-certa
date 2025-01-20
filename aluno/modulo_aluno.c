@@ -50,7 +50,6 @@ void ler_nome(Aluno* aluno) {
     } while (!verificarnome(aluno->nome));  
 }
 
-
 void ler_email(Aluno* aluno) {
     do {
         printf("\nDigite o Email (formato correto: exemplo@dominio.com): ");
@@ -67,7 +66,6 @@ void ler_cpf(Aluno* aluno) {
     } while (!verificarCPF(aluno->cpf));  
 }
 
-
 void ler_telefone(Aluno* aluno) {
     do {
         printf("\nDigite o Telefone (apenas números, 10 ou 11 dígitos): ");
@@ -77,11 +75,10 @@ void ler_telefone(Aluno* aluno) {
 }
 
 void ler_status(Aluno* aluno) {
-    do {
-        printf("\nDigite o status (0 ou 1): ");
-        fgets(aluno->status, 1, stdin);  
-        aluno->status[strcspn(aluno->status, "\n")] = '\0';
-    } while (aluno->status != 0 && aluno->status != 1);  
+  do {
+    printf("\nDigite o status (0 ou 1): ");
+    scanf(" %c", &aluno->status);  
+  } while (aluno->status != '0' && aluno->status != '1');  
 }
 
 void cadastrar_aluno(void){
@@ -248,9 +245,6 @@ void excluir_aluno(void){
   printf("***                                                                         ***\n");
   printf("***                   - - - - Excluir Aluno - - - -                         ***\n");
   printf("***                                                                         ***\n");
-  printf("***         CPF:                                                            ***\n");
-  scanf("%s", cpf);
-  getchar();
   printf("***                                                                         ***\n");
   printf("*******************************************************************************\n");
   printf("*******************************************************************************\n");
