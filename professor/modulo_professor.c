@@ -1,6 +1,6 @@
 #include "../home/includes.h"
 
-void modulo_professor(void) {
+void modulo_professor(void){
 	char op;
 	do {
 		op = menu_professor();
