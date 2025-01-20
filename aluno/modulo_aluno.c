@@ -96,6 +96,9 @@ void cadastrar_aluno(void){
   
   do{
     ler_cpf(aluno);
+    if(cpf_ja_cadastrado(aluno->cpf, "aluno.dat", aluno, sizeof(Aluno), offsetof(Aluno, cpf))){
+      printf("CPF JA CADASTRADO");
+    }
   } while (cpf_ja_cadastrado(aluno->cpf, "aluno.dat", aluno, sizeof(Aluno), offsetof(Aluno, cpf)));
 
   ler_nome(aluno); 
@@ -104,7 +107,7 @@ void cadastrar_aluno(void){
     
   ler_telefone(aluno); 
 
-  ler_status(aluno);
+  aluno->status = '1';
 
   fwrite(aluno, sizeof(Aluno), 1, fp);
   fclose(fp);
@@ -118,7 +121,6 @@ void cadastrar_aluno(void){
 }
 
 void exibe_aluno(Aluno* aluno){
-
   printf("\nAluno encontrado!\n");
   printf("CPF: %s\n", aluno->cpf);
   printf("Nome: %s\n", aluno->nome);
@@ -127,68 +129,66 @@ void exibe_aluno(Aluno* aluno){
   printf("Status: %c\n", aluno->status);
 }
 
-Aluno* buscar_aluno(){
-
+Aluno* buscar_aluno() {
   char* cpf;
-  cpf = (char*) malloc(15*sizeof(char));
+  cpf = (char*) malloc(15 * sizeof(char)); 
   Aluno* aluno;
-  aluno = (Aluno*) malloc(sizeof(Aluno));
+  aluno = (Aluno*) malloc(sizeof(Aluno)); 
   FILE* fp;
-  fp = fopen("aluno.dat", "rb");
+  fp = fopen("aluno.dat", "rb"); 
 
-  if(fp == NULL){
-      printf("Arquivo não encontrado!");
-      free(cpf);
-      fclose(fp);
-      return NULL;
-
-  }else{
-
-    do{
-      printf("\nDigite o CPF : ");
-      fgets(cpf, 15, stdin);
-      cpf[strcspn(cpf, "\n")] = '\0'; 
-    }while(!verificarCPF(cpf));
-
-    while(fread(aluno, sizeof(aluno), 1, fp)){
-      if ((strcmp(aluno->cpf, cpf) == 0)){
-          exibe_aluno(aluno);
-          free(cpf);
-          fclose(fp);
-          return aluno;
-      }
-    }
-  }
-
-  printf("\nAluno com CPF %s não encontrado!\n", cpf);
-  free(cpf);
-  fclose(fp);
-  free(aluno);
+if (fp == NULL) {
+  printf("Arquivo não encontrado!\n");
+  free(cpf); 
+  fclose(fp);  
+  getchar();
   return NULL;
+} else {
+    do {
+      printf("\nDigite o CPF: ");
+      fgets(cpf, 15, stdin); 
+      cpf[strcspn(cpf, "\n")] = '\0';  
+    }while(!verificarCPF(cpf));  
+
+   
+    while(fread(aluno, sizeof(Aluno), 1, fp)){ 
+        if (strcmp(aluno->cpf, cpf) == 0){  
+          exibe_aluno(aluno);  
+          free(cpf);  
+          fclose(fp); 
+          return aluno;  
+        }
+    }
+}
+
+
+printf("\nAluno com CPF %s não encontrado!\n", cpf);
+free(cpf);  
+fclose(fp);  
+free(aluno); 
+return NULL;  
 }
 
 void pesquisar_aluno(void){
 
   cabecalho_principal();
-
   printf("*******************************************************************************\n");
   printf("***                                                                         ***\n");
   printf("***                  - - - - Pesquisar Aluno - - - -                        ***\n");
   printf("***                                                                         ***\n");
   printf("***                                                                         ***\n");
   printf("*******************************************************************************\n");
-  printf("*******************************************************************************\n");
+  buscar_aluno();
   printf(">>> Tecle <ENTER> para continuar...\n");
   getchar();
 }
 
 void atualizar_aluno(void){
-
   cabecalho_principal();
   FILE* fp;
-  fp = fopen("aluno.dat", "rb");
-  char op;  
-    
+  fp = fopen("aluno.dat", "r+b");  
+  char op;
+
   printf("*******************************************************************************\n");
   printf("***                                                                         ***\n");
   printf("***                  - - - - Atualizar Dados do Aluno - - - -              ***\n");
@@ -197,44 +197,48 @@ void atualizar_aluno(void){
 
   if (fp == NULL) {
     printf("Erro ao abrir os arquivos!\n");
-    fclose(fp);
     return;
   }
 
-  Aluno* aluno = buscar_aluno();
+  Aluno* aluno = buscar_aluno();  
   if (aluno == NULL) {
     fclose(fp);
-    return; 
+    return;  
   }
+
   do {
-    op = tela_alterar_dado();
-		switch(op) {
-			case '1': 
-        ler_nome(aluno);
+  op = tela_alterar_dado();  
+  switch(op) {
+    case '1': 
+        ler_nome(aluno);  
         break;
-			case '2':
-        ler_email(aluno); 	
-				break;
-			case '3': 	
-        ler_telefone(aluno);
-				break;
-			case '4': 
-        ler_status(aluno);	
-				break;
-		} 	
-    if (op != '0') {
-      fseek(fp, -sizeof(Aluno), SEEK_CUR);  
-      fwrite(aluno, sizeof(Aluno), 1, fp);  
-    }
+    case '2':
+        ler_email(aluno);  
+        break;
+    case '3': 
+        ler_telefone(aluno);  
+        break;
+    case '4': 
+        ler_status(aluno);  
+        break;
+  }
 
-	} while (op != '0');
-  
-  fclose(fp);
+  if(op != '0'){
+    fseek(fp, -sizeof(Aluno), SEEK_CUR);  
+    fwrite(aluno, sizeof(Aluno), 1, fp);  
+    fflush(fp);  
+  }
 
+  }while (op != '0');
+
+  fclose(fp);  
+  free(aluno);
   printf("\nDados atualizados com sucesso!\n");
   printf("\n>>> Tecle <ENTER> para continuar...\n");
   getchar();
+  
 }
+
 
 void excluir_aluno(void){
   cabecalho_principal();
