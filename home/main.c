@@ -9,12 +9,12 @@ int main(void){
 						break;
 			case '2': 	modulo_aluno();
 						break;
-			case '3': 	modulo_disciplinas();
+			case '3': 	modulo_disciplina();
 						break;
-			case '4': 	modulo_relatorios();
-						break;
-			case '5': 	modulo_informacoes();
-						break;
+			//case '4': 	modulo_relatorios();
+				//		break;
+			//case '5': 	modulo_informacoes();
+				//		break;
 		} 		
 	} while (opcao != '0');
 	return 0;    

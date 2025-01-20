@@ -1,10 +1,22 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "../home/modulo_telas_iniciais.h"
-#include "modulo_disciplinas.h"
+#include "../home/includes.h"
 
-char tela_menu_disciplina(void){
+void modulo_disciplina(void){
+	char op;
+	do {
+		op = menu_disciplina();
+		switch(op) {
+			case '1': 	cadastrar_disciplina();
+						break;
+			case '2': 	pesquisar_disciplina();
+						break;
+			case '3': 	atualizar_disciplina();
+						break;
+			case '4': 	excluir_disciplina();
+						break;
+		} 		
+	} while (op != '0');
+}
+char menu_disciplina(void){
   char op;
   cabecalho_principal();
   printf("*******************************************************************************\n");
@@ -12,9 +24,9 @@ char tela_menu_disciplina(void){
   printf("***                   - - - - Menu Disciplina - - - -                       ***\n");
   printf("***                                                                         ***\n");
   printf("***         1 - Cadastrar Disciplina                                        ***\n");
-  printf("***         2 - Excluir Disciplina                                          ***\n");
-  printf("***         3 - Pesquisar Disciplina                                        ***\n");
-  printf("***         4 - Atualizar Disciplina                                        ***\n");
+  printf("***         2 - Pesquisar Disciplina                                        ***\n");
+  printf("***         3 - Atualizar Disciplina                                        ***\n");
+  printf("***         4 - Excluir Disciplina                                          ***\n");
   printf("***         0 - Sair                                                        ***\n");
   printf("***                                                                         ***\n");
   printf("***         Escolha a opcao desejada...                                     ***\n");
@@ -26,7 +38,7 @@ char tela_menu_disciplina(void){
   return op;
 }
 
-void tela_cadastrar_disciplina(void){
+void cadastrar_disciplina(void){
   char nome[40];
   char dep[5];
   char cod[9];
@@ -47,7 +59,7 @@ void tela_cadastrar_disciplina(void){
   getchar();
 }
 
-void tela_pesquisar_disciplina(void){
+void pesquisar_disciplina(void){
   char cod[9];
 
   cabecalho_principal();
@@ -64,7 +76,7 @@ void tela_pesquisar_disciplina(void){
   getchar();
 }
 
-void tela_atualizar_disciplina(void){
+void atualizar_disciplina(void){
   char cod[9];
 
   cabecalho_principal();
@@ -81,7 +93,7 @@ void tela_atualizar_disciplina(void){
   getchar();
 }
 
-void tela_excluir_disciplina(void){
+void excluir_disciplina(void){
   char cod[9];
   
   cabecalho_principal();
