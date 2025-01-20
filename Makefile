@@ -1,16 +1,16 @@
-	CC = gcc
-	CFLAGS = -Wall
-	SRC = $(wildcard aluno/*.c) $(wildcard professor/*.c) $(wildcard salas/*.c) $(wildcard disciplinas/*.c) $(wildcard home/*.c) $(wildcard funcoes/*.c)
-	OBJ = $(SRC:.c=.o)
-	EXEC = main.exe
+CC = gcc
+CFLAGS = -Wall
+SRC = $(wildcard aluno/*.c) $(wildcard professor/*.c) $(wildcard salas/*.c) $(wildcard disciplinas/*.c) $(wildcard home/*.c) $(wildcard funcoes/*.c)
+OBJ = $(SRC:.c=.o)
+EXEC = main.exe
 
-	all: $(EXEC)
+all: $(EXEC)
 
-	$(EXEC): $(OBJ)
-		$(CC) -o $@ $^
+$(EXEC): $(OBJ)
+	$(CC) -o $@ $^
 
-	%.o: %.c
-		$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-	clean:
-		rm -f $(OBJ) $(EXEC)
+clean:
+	rm -f $(OBJ) $(EXEC)

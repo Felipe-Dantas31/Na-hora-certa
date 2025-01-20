@@ -3,7 +3,7 @@
 int main(void){
 	char opcao;
 	do {
-		opcao = menuPrincipal();
+		opcao = tela_menu_principal();
 		switch(opcao) {
 			case '1': 	modulo_professor();
 						break;

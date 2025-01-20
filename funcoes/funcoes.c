@@ -131,7 +131,7 @@ int verificaremail(char* email){
 
 }
 
-int cpf_ja_cadastrado(const char *cpf, const char *nome_arquivo, void *registro, size_t tamanho_registro, size_t offset_cpf) {
+int cpf_ja_cadastrado(const char *cpf, const char *nome_arquivo, void *registro, size_t tamanho_registro, size_t offset_cpf){
     FILE *fp;
     int existe = 0;
 

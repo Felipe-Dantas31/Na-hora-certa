@@ -1,10 +1,23 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "../home/modulo_telas_iniciais.h"
-#include "modulo_professor.h"
+#include "../home/includes.h"
 
-char tela_menu_professor(void){
+void modulo_professor(void) {
+	char op;
+	do {
+		op = menu_professor();
+		switch(op) {
+			case '1': 	cadastrar_professor();
+						break;
+			case '2': 	pesquisar_professor();
+						break;
+			case '3': 	atualizar_professor();
+						break;
+			case '4': 	excluir_professor();
+						break;
+		} 		
+	} while (op != '0');
+}
+
+char menu_professor(void){
   char op;
   cabecalho_principal();
   printf("*******************************************************************************\n");
@@ -12,9 +25,9 @@ char tela_menu_professor(void){
   printf("***                     - - - - Menu Professor - - - -                      ***\n");
   printf("***                                                                         ***\n");
   printf("***         1 - Cadastrar Professor                                         ***\n");
-  printf("***         2 - Excluir Professor                                           ***\n");
-  printf("***         3 - Pesquisar Professor                                         ***\n");
-  printf("***         4 - Atualizar Professor                                         ***\n");
+  printf("***         2 - Pesquisar Professor                                         ***\n");
+  printf("***         3 - Atualizar Professor                                         ***\n");
+  printf("***         4 - Excluir Professor                                           ***\n");
   printf("***         0 - Sair                                                        ***\n");
   printf("***                                                                         ***\n");
   printf("***         Escolha a opcao desejada...                                     ***\n");
@@ -26,7 +39,7 @@ char tela_menu_professor(void){
   return op;
 }
 
-void tela_cadastrar_professor(void){
+void cadastrar_professor(void){
   cabecalho_principal();
   printf("*******************************************************************************\n");
   printf("***                                                                         ***\n");
@@ -44,7 +57,7 @@ void tela_cadastrar_professor(void){
   getchar();
 }
 
-void tela_pesquisar_professor(void){
+void pesquisar_professor(void){
   cabecalho_principal();
   printf("*******************************************************************************\n");
   printf("***                                                                         ***\n");
@@ -59,7 +72,7 @@ void tela_pesquisar_professor(void){
   getchar();
 }
 
-void tela_atualizar_professor(void){
+void atualizar_professor(void){
   cabecalho_principal();
   printf("*******************************************************************************\n");
   printf("***                                                                         ***\n");
@@ -74,7 +87,7 @@ void tela_atualizar_professor(void){
   getchar();
 }
 
-void tela_excluir_professor(void){
+void excluir_professor(void){
   cabecalho_principal();
   printf("*******************************************************************************\n");
   printf("***                                                                         ***\n");
