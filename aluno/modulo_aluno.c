@@ -97,7 +97,9 @@ void cadastrar_aluno(void){
   printf("***                  - - - - Cadastrar Aluno - - - -                        ***\n");
   printf("***                                                                         ***\n");
   
-  ler_cpf(aluno);
+  do{
+    ler_cpf(aluno);
+  } while (cpf_ja_cadastrado(aluno->cpf, "aluno.dat", aluno, sizeof(Aluno), offsetof(Aluno, cpf)));
 
   ler_nome(aluno); 
 

@@ -131,24 +131,25 @@ int verificaremail(char* email){
 
 }
 
-int cpf_ja_cadastrado(const char *cpf, const char *nome_arquivo, void *registro, size_t tamanho_registro) {
+int cpf_ja_cadastrado(const char *cpf, const char *nome_arquivo, void *registro, size_t tamanho_registro, size_t offset_cpf) {
     FILE *fp;
     int existe = 0;
 
-    // Abre o arquivo para leitura
     fp = fopen(nome_arquivo, "rb");
     if (fp == NULL) {
-        return 0; // Arquivo não existe, CPF não cadastrado
+        return 0; 
     }
 
-    // Percorre o arquivo para verificar o CPF
     while (fread(registro, tamanho_registro, 1, fp)) {
-        char *cpf_registro = *((char **)((char *)registro + offsetof(Aluno, cpf)));
+        
+        char *cpf_registro = (char *)registro + offset_cpf;
+
         if (strcmp(cpf_registro, cpf) == 0) {
-            existe = 1; // CPF encontrado
+            existe = 1; 
             break;
         }
     }
 
     fclose(fp);
-    return existe;
+    return existe; 
+}
