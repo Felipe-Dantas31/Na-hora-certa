@@ -28,9 +28,9 @@ char menu_aluno(void){
   printf("***                     - - - - Menu Aluno - - - -                          ***\n");
   printf("***                                                                         ***\n");
   printf("***         1 - Cadastrar Aluno                                             ***\n");
-  printf("***         2 - Excluir Aluno                                               ***\n");
-  printf("***         3 - Pesquisar Aluno                                             ***\n");
-  printf("***         4 - Atualizar Aluno                                             ***\n");
+  printf("***         2 - Pesquisar Aluno                                             ***\n");
+  printf("***         3 - Atualizar Aluno                                             ***\n");
+  printf("***         4 - Excluir Aluno                                               ***\n");
   printf("***         0 - Sair                                                        ***\n");
   printf("***                                                                         ***\n");
   printf("***         Escolha a opcao desejada...                                     ***\n");
@@ -187,20 +187,19 @@ void atualizar_aluno(void){
   cabecalho_principal();
   FILE* fp;
   fp = fopen("aluno.dat", "rb");
-  char op;
-
-
-  if (fp == NULL) {
-    printf("Erro ao abrir os arquivos!\n");
-    fclose(fp);
-    return;
-  }  
+  char op;  
     
   printf("*******************************************************************************\n");
   printf("***                                                                         ***\n");
   printf("***                  - - - - Atualizar Dados do Aluno - - - -              ***\n");
   printf("***                                                                         ***\n");
   printf("*******************************************************************************\n");
+
+  if (fp == NULL) {
+    printf("Erro ao abrir os arquivos!\n");
+    fclose(fp);
+    return;
+  }
 
   Aluno* aluno = buscar_aluno();
   if (aluno == NULL) {
@@ -238,17 +237,71 @@ void atualizar_aluno(void){
 }
 
 void excluir_aluno(void){
-  char cpf[13];
-  
   cabecalho_principal();
+  FILE *fp;
+  FILE *temp;
+  int encontrou = 0;
+  char confirmacao;
+
   printf("*******************************************************************************\n");
   printf("***                                                                         ***\n");
   printf("***                   - - - - Excluir Aluno - - - -                         ***\n");
   printf("***                                                                         ***\n");
   printf("***                                                                         ***\n");
   printf("*******************************************************************************\n");
-  printf("*******************************************************************************\n");
-  printf("\n");
-  printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
+
+  fp = fopen("aluno.dat", "rb");
+  if (fp == NULL) {
+    printf("Erro ao abrir o arquivo de alunos!\n");
+    return;
+  }
+
+  temp = fopen("temp.dat", "wb");
+  if (temp == NULL) {
+    printf("Erro ao criar arquivo temporário!\n");
+    fclose(fp);
+    return;
+  }
+
+  Aluno* aln = buscar_aluno();
+  Aluno* aluno = (Aluno *)malloc(sizeof(Aluno));
+
+  if (aluno == NULL) {
+    fclose(fp);
+    return; 
+  }
+
+  while(fread(aluno, sizeof(Aluno), 1, fp)) {
+    if(strcmp(aluno->cpf, aln->cpf) == 0) {
+      encontrou = 1;
+      printf("\nAluno com CPF %s foi encontrado.\n", aluno->cpf);
+      printf("\nTem certeza que deseja excluir este aluno? (s/n): ");
+      scanf(" %c", &confirmacao);  
+      getchar();
+
+      if(confirmacao == 's' || confirmacao == 'S') {
+        printf("\nAluno com CPF %s foi excluído.\n", aluno->cpf);
+      }else{
+        printf("\nExclusão cancelada.\n");
+        fwrite(aluno, sizeof(Aluno), 1, temp);
+      }
+    }else{
+      fwrite(aluno, sizeof(Aluno), 1, temp);
+    }
+  }
+
+  free(aluno);
+  fclose(fp);
+  fclose(temp);
+
+  if (encontrou) {
+    remove("aluno.dat");
+    rename("temp.dat", "aluno.dat");
+  } else {
+    remove("temp.dat");
+    printf("\nAluno não encontrado para exclusão.\n");
+  }
+
+  printf("\n>>> Tecle <ENTER> para continuar...\n");
   getchar();
 }
